@@ -12,7 +12,10 @@ const MainBody = ({foodData}: any) => {
   // function handleSetCouponsState(coupon: number) {
   //   SetCouponsState(prevState => Math.max(0, prevState - coupon));
   // }
-  function handleSetCouponsState(coupon: number, changeType: 'increment' | 'decrement') {
+  function handleSetCouponsState(
+    coupon: number,
+    changeType: 'increment' | 'decrement',
+  ) {
     SetCouponsState(prevState => {
       if (changeType === 'increment') {
         return Math.max(0, prevState - coupon); // Reduce available coupons
@@ -21,7 +24,6 @@ const MainBody = ({foodData}: any) => {
       }
     });
   }
-  
 
   function updateCardColor(id: number, color: string) {
     setCardColors(prevState => ({
@@ -110,7 +112,7 @@ const MainBody = ({foodData}: any) => {
                             gap: 10,
                           }}>
                           {/* + Button */}
-                          <TouchableOpacity
+                          {/* <TouchableOpacity
                             onPress={() => {
                               handleSetCouponsState(item.coupon, 'increment'); // Reduce available coupons
                               handleIncrementDecrement(item.id, 1);
@@ -119,6 +121,25 @@ const MainBody = ({foodData}: any) => {
                             <MaterialCommunityIcons
                               name="plus-circle-outline"
                               size={20}
+                            />
+                          </TouchableOpacity> */}
+                          <TouchableOpacity
+                            onPress={() => {
+                              if (couponsState >= item.coupon) {
+                                // Ensure enough coupons are available
+                                handleSetCouponsState(item.coupon, 'increment');
+                                handleIncrementDecrement(item.id, 1);
+                                updateCardColor(item.id, 'lightblue');
+                              }
+                            }}
+                            disabled={couponsState < item.coupon} // Disable button when not enough coupons
+                          >
+                            <MaterialCommunityIcons
+                              name="plus-circle-outline"
+                              size={20}
+                              color={
+                                couponsState < item.coupon ? 'gray' : 'black'
+                              } // Dim when disabled
                             />
                           </TouchableOpacity>
 
