@@ -4,7 +4,6 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import GlobalStyles from '../GlobalStyles';
@@ -13,10 +12,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const MainBody = ({foodData}: any) => {
   const [couponsState, SetCouponsState] = useState(26);
-  const [CardBackgroundColor, SetCardBackgroundColor] = useState('white');
+  const [cardColors, setCardColors] = useState({});
 
-  function handleSetCouponsState(coupon: number) {
+  function handleSetCouponsState(coupon: number, id: number) {
     SetCouponsState(prevState => Math.max(0, prevState - coupon));
+    setCardColors(prevColors => ({
+      ...prevColors,
+      [id]: prevColors[id] === 'lightblue' ? 'white' : 'lightblue',
+    }));
   }
 
   return (
@@ -38,84 +41,54 @@ const MainBody = ({foodData}: any) => {
       <View style={{flex: 1}}>
         <ScrollView>
           <View style={{flex: 1}}>
-            <ScrollView>
-              {foodData.map(
-                (item: {
-                  id: number;
-                  itemName: string;
-                  coupon: number;
-                  URL: any;
-                }) => (
-                  <View>
+            {foodData.map(
+              (item: {
+                id: number;
+                itemName: string;
+                coupon: number;
+                URL: any;
+              }) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={[
+                    GlobalStyles.foodViewSize,
+                    {backgroundColor: cardColors[item.id] || 'white'},
+                  ]}
+                  onPress={() => handleSetCouponsState(item.coupon, item.id)}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      paddingHorizontal: 10,
+                    }}>
                     <View
-                      key={item.id}
-                      style={[
-                        GlobalStyles.foodViewSize,
-                        {backgroundColor: CardBackgroundColor},
-                      ]}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          width: '100%',
-                          paddingHorizontal: 10,
-                        }}
-                        key={item.id}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                          }}>
-                          <Image
-                            source={item.URL}
-                            style={GlobalStyles.foodImageSize}
-                          />
-                          <Text style={{fontSize: 16, fontWeight: '700'}}>
-                            {item.itemName}
-                          </Text>
-                          <View style={{flexDirection: 'row', gap: 3}}>
-                            <Text style={GlobalStyles.CouponsTextSize}>
-                              {item.coupon}
-                            </Text>
-                            <Text style={GlobalStyles.CouponsTextSize}>
-                              {`(${item.coupon <= 1 ? 'Coupons' : 'Coupons'})`}
-                            </Text>
-                          </View>
-                        </View>
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              gap: 10,
-                            }}>
-                            <TouchableOpacity
-                              onPress={() => {
-                                handleSetCouponsState(item.coupon);
-                                SetCardBackgroundColor('pink');
-                              }}>
-                              <MaterialCommunityIcons
-                                name="plus-circle-outline"
-                                size={20}
-                              />
-                            </TouchableOpacity>
-                            <Text>5</Text>
-                            <TouchableOpacity>
-                              <MaterialCommunityIcons
-                                name="minus-circle-outline"
-                                size={20}
-                              />
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      </View>
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 10,
+                      }}>
+                      <Image
+                        source={item.URL}
+                        style={GlobalStyles.foodImageSize}
+                      />
+                      <Text style={{fontSize: 16, fontWeight: '700'}}>
+                        {item.itemName}
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row', gap: 3}}>
+                      <Text style={GlobalStyles.CouponsTextSize}>
+                        {item.coupon}
+                      </Text>
+                      <Text style={GlobalStyles.CouponsTextSize}>
+                        {`${item.coupon <= 1 ? 'Coupon' : 'Coupons'}`}
+                      </Text>
                     </View>
                   </View>
-                ),
-              )}
-            </ScrollView>
+                </TouchableOpacity>
+              ),
+            )}
           </View>
         </ScrollView>
       </View>
