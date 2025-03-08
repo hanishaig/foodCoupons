@@ -123,30 +123,8 @@ const MainBody = ({foodData}: any) => {
                               size={20}
                             />
                           </TouchableOpacity> */}
-                          <TouchableOpacity
-                            onPress={() => {
-                              if (couponsState >= item.coupon) {
-                                // Ensure enough coupons are available
-                                handleSetCouponsState(item.coupon, 'increment');
-                                handleIncrementDecrement(item.id, 1);
-                                updateCardColor(item.id, 'lightblue');
-                              }
-                            }}
-                            disabled={couponsState < item.coupon} // Disable button when not enough coupons
-                          >
-                            <MaterialCommunityIcons
-                              name="plus-circle-outline"
-                              size={20}
-                              color={
-                                couponsState < item.coupon ? 'gray' : 'black'
-                              } // Dim when disabled
-                            />
-                          </TouchableOpacity>
 
-                          {/* Display Count */}
-                          <Text>{itemCounts[item.id] || 0}</Text>
-
-                          {/* - Button */}
+                           {/* - Button */}
                           <TouchableOpacity
                             onPress={() => {
                               if (itemCounts[item.id] > 0) {
@@ -163,8 +141,33 @@ const MainBody = ({foodData}: any) => {
                             <MaterialCommunityIcons
                               name="minus-circle-outline"
                               size={20}
+                              color={'red'}
                             />
                           </TouchableOpacity>
+
+                          {/* Display Count */}
+                          <Text>{itemCounts[item.id] || 0}</Text>
+
+                          <TouchableOpacity
+                            onPress={() => {
+                              if (couponsState >= item.coupon) {
+                                // Ensure enough coupons are available
+                                handleSetCouponsState(item.coupon, 'increment');
+                                handleIncrementDecrement(item.id, 1);
+                                updateCardColor(item.id, 'lightblue');
+                              }
+                            }}
+                            disabled={couponsState < item.coupon} // Disable button when not enough coupons
+                          >
+                            <MaterialCommunityIcons
+                              name="plus-circle-outline"
+                              size={20}
+                              color={
+                                couponsState < item.coupon ? 'gray' : 'green'
+                              } // Dim when disabled
+                            />
+                          </TouchableOpacity>
+
                         </View>
                       </View>
                     </View>
