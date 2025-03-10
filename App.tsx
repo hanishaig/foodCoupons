@@ -9,6 +9,7 @@ import {createStackNavigator, Header} from '@react-navigation/stack';
 import TransactionDetails from './components/TransactionFolder/TransactionDetails';
 import Checkout from './components/Checkout';
 import MainBody from './components/MainBody';
+import OrderedItems from './components/OrderedItems/OrderedItems';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const App = () => {
         <Stack.Screen name="TransactionDetails" component={TransactionDetails} />
         <Stack.Screen name="MainBody" component={MainBody} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="OrderedItems" component={OrderedItems} />
       </Stack.Navigator>
     </NavigationContainer>
   );
