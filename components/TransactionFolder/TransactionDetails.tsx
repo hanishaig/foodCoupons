@@ -14,7 +14,7 @@ const TransactionDetails = () => {
         style={[
           GlobalStyles.oneaigHeader,
           GlobalStyles.alignTextContainer,
-          {paddingTop: Platform.OS === 'android' ? 40 : 15}, // Extra padding for Android
+         , // Extra padding for Android
         ]}>
         <Text style={GlobalStyles.oneaigText}>ONE AIG</Text>
         <AntDesignIcon

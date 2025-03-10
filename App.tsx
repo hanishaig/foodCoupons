@@ -9,20 +9,20 @@ import {createStackNavigator, Header} from '@react-navigation/stack';
 import TransactionDetails from './components/TransactionFolder/TransactionDetails';
 import Checkout from './components/Checkout';
 import MainBody from './components/MainBody';
-import OrderedItems from './components/OrderedItems/OrderedItems';
+import QRCodePage from './components/OrderedItems/QRCodePage';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer  >
-      <Stack.Navigator screenOptions={{headerShown:false}}>
-        <Stack.Screen name="Home" component={homeScreen}  />
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Home" component={homeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="TransactionDetails" component={TransactionDetails} />
+        <Stack.Screen name="TransactionDetails" component={TransactionDetails}/>
         <Stack.Screen name="MainBody" component={MainBody} />
         <Stack.Screen name="Checkout" component={Checkout} />
-        <Stack.Screen name="OrderedItems" component={OrderedItems} />
+        <Stack.Screen name="QRCodePage" component={QRCodePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -10,11 +10,15 @@ import React, {useState} from 'react';
 import GlobalStyles from '../GlobalStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import OrderedItems from './OrderedItems/OrderedItems';
+import OrderedItems from './OrderedItems/QRCodePage';
 import {Modal} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import type {NavigationProp} from '../types';
+
 
 const MainBody = ({foodData}: any) => {
+  const navigation = useNavigation<NavigationProp>();
   const [couponsState, SetCouponsState] = useState(26);
   const [cardColors, setCardColors] = useState<{[key: number]: string}>({});
   const [itemCounts, setItemCounts] = useState<{[key: number]: number}>({});
@@ -196,11 +200,13 @@ const MainBody = ({foodData}: any) => {
           <View>
             <Text style={{color: '#0A66A5', fontWeight: 'bold'}}>
               {
-                Object.keys(itemCounts).filter(key => itemCounts[key] > 0)
-                  .length
+                Object.keys(itemCounts).filter(
+                  key => itemCounts[Number(key)] > 0,
+                ).length
               }{' '}
-              {Object.keys(itemCounts).filter(key => itemCounts[key] > 0)
-                .length === 1
+              {Object.keys(itemCounts).filter(
+                key => itemCounts[Number(key)] > 0,
+              ).length === 1
                 ? 'Product Selected'
                 : 'Products Selected'}
             </Text>
@@ -232,7 +238,8 @@ const MainBody = ({foodData}: any) => {
               <View
                 style={{
                   width: '90%',
-                  height: '80%', 
+                  maxHeight: '80%',
+                  minHeight: '40%',
                   backgroundColor: 'white',
                   padding: 20,
                   borderRadius: 15,
@@ -255,10 +262,11 @@ const MainBody = ({foodData}: any) => {
                 <SafeAreaView style={{flex: 1}}>
                   <ScrollView style={{flex: 1}}>
                     {' '}
-                    {/* Added flex: 1 */}
                     {Object.entries(itemCounts).map(([id, count]) => {
                       if (count > 0) {
-                        const item = foodData.find(food => food.id == id);
+                        const item = foodData.find(
+                          (food: {id: string}) => food.id == id,
+                        );
                         return (
                           <View
                             key={id}
@@ -267,9 +275,9 @@ const MainBody = ({foodData}: any) => {
                               alignItems: 'center',
                               justifyContent: 'space-between',
                               backgroundColor: '#F7F7F7',
-                              padding: 10,
+                              padding: 8,
                               borderRadius: 10,
-                              marginBottom: 5,
+                              marginBottom: 6,
                             }}>
                             <View
                               style={{
@@ -309,14 +317,19 @@ const MainBody = ({foodData}: any) => {
                     Total:
                   </Text>
                   <Text style={{fontWeight: 'bold', color: '#000'}}>
-                    {Object.entries(itemCounts).reduce(
-                      (total, [id, count]) =>
-                        total +
-                        (foodData.find(item => item.id == id)?.coupon || 0) *
-                          count,
-                      0,
-                    )}{' '}
-                    Coupons
+                    {(() => {
+                      const totalCoupons = Object.entries(itemCounts).reduce(
+                        (total, [id, count]) =>
+                          total +
+                          (foodData.find((item: {id: string}) => item.id == id)
+                            ?.coupon || 0) *
+                            count,
+                        0,
+                      );
+                      return `${totalCoupons} ${
+                        totalCoupons === 1 ? 'Coupon' : 'Coupons'
+                      }`;
+                    })()}
                   </Text>
                 </View>
 
@@ -335,7 +348,8 @@ const MainBody = ({foodData}: any) => {
                       paddingVertical: 10,
                       borderRadius: 10,
                       marginRight: 5,
-                    }}>
+                    }}
+                    onPress={() => navigation.navigate("QRCodePage")}>
                     <Text style={{color: '#fff', fontWeight: 'bold'}}>
                       Confirm
                     </Text>
