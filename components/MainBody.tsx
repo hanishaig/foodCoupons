@@ -4,22 +4,56 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import GlobalStyles from '../GlobalStyles';
 import LinearGradient from 'react-native-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Modal} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const MainBody = ({foodData}: any) => {
+  const navigation = useNavigation<NavigationProp>();
   const [couponsState, SetCouponsState] = useState(26);
-  const [cardColors, setCardColors] = useState({});
+  const [cardColors, setCardColors] = useState<{[key: number]: string}>({});
+  const [selectedItems, setSelectedItems] = useState<{[key: number]: boolean}>(
+    {},
+  );
+  const [ModalVisible, SetModalVisible] = useState(false);
 
-  function handleSetCouponsState(coupon: number, id: number) {
-    SetCouponsState(prevState => Math.max(0, prevState - coupon));
-    setCardColors(prevColors => ({
-      ...prevColors,
-      [id]: prevColors[id] === 'lightblue' ? 'white' : 'lightblue',
-    }));
+  function handleSetCouponsState(
+    coupon: number,
+    changeType: 'increment' | 'decrement',
+  ) {
+    SetCouponsState(prevState => {
+      if (changeType === 'increment') {
+        return Math.max(0, prevState - coupon);
+      } else {
+        return prevState + coupon;
+      }
+    });
+  }
+
+  function toggleSelection(item: any) {
+    setSelectedItems(prevState => {
+      const isSelected = prevState[item.id];
+      const updatedItems = {
+        ...prevState,
+        [item.id]: !isSelected,
+      };
+      setCardColors(prevColors => ({
+        ...prevColors,
+        [item.id]: !isSelected ? 'lightblue' : 'white',
+      }));
+
+      handleSetCouponsState(
+        item.coupon,
+        isSelected ? 'decrement' : 'increment',
+      );
+
+      return updatedItems;
+    });
   }
 
   return (
@@ -32,29 +66,26 @@ const MainBody = ({foodData}: any) => {
         ]}>
         <TouchableOpacity>
           <Text style={GlobalStyles.availableTokens}>
-            Available Coupons : {couponsState}
+            Available Coupons: {couponsState}
           </Text>
         </TouchableOpacity>
       </LinearGradient>
 
-      {/* Scrollable Food List */}
       <View style={{flex: 1}}>
-        <ScrollView>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: Object.values(selectedItems).some(Boolean) ? 80 : 0,
+          }}>
           <View style={{flex: 1}}>
-            {foodData.map(
-              (item: {
-                id: number;
-                itemName: string;
-                coupon: number;
-                URL: any;
-              }) => (
-                <TouchableOpacity
-                  key={item.id}
+            {foodData.map((item: any) => (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => toggleSelection(item)}>
+                <View
                   style={[
                     GlobalStyles.foodViewSize,
                     {backgroundColor: cardColors[item.id] || 'white'},
-                  ]}
-                  onPress={() => handleSetCouponsState(item.coupon, item.id)}>
+                  ]}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -82,16 +113,52 @@ const MainBody = ({foodData}: any) => {
                         {item.coupon}
                       </Text>
                       <Text style={GlobalStyles.CouponsTextSize}>
-                        {`${item.coupon <= 1 ? 'Coupon' : 'Coupons'}`}
+                        {`(${item.coupon <= 1 ? 'Coupon' : 'Coupons'})`}
                       </Text>
                     </View>
                   </View>
-                </TouchableOpacity>
-              ),
-            )}
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
         </ScrollView>
       </View>
+
+      {Object.values(selectedItems).some(Boolean) && (
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            backgroundColor: '#D9ECFF',
+            padding: 15,
+            borderTopWidth: 1,
+            borderColor: '#B3DAFF',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderRadius: 15,
+            marginBottom: 8,
+          }}>
+          <Text style={{color: '#0A66A5', fontWeight: 'bold'}}>
+            {Object.values(selectedItems).filter(Boolean).length}{' '}
+            {Object.values(selectedItems).filter(Boolean).length === 1
+              ? 'Product Selected'
+              : 'Products Selected'}
+          </Text>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#2c67f2',
+              borderRadius: 20,
+              paddingHorizontal: 20,
+              paddingVertical: 8,
+            }}
+            onPress={() => SetModalVisible(true)}>
+            <Text style={{color: '#fff', fontWeight: 'bold'}}>Checkout</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
