@@ -4,7 +4,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import GlobalStyles from '../../GlobalStyles';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-const QRCodePage = () => {
+const QRCodePage = ({navigation}:any) => {
+
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       {/* Header */}
@@ -68,7 +70,10 @@ const QRCodePage = () => {
                   Share
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[GlobalStyles.qrcodesharecancelbuttons]}>
+              <TouchableOpacity style={[GlobalStyles.qrcodesharecancelbuttons]}
+              onPress={()=>{navigation.navigate('HomeScreen')}}
+              
+              >
                 <Text style={[GlobalStyles.qrcodesharecancelbuttonsText]}>
                   Cancel
                 </Text>

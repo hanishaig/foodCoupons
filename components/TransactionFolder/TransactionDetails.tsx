@@ -1,4 +1,4 @@
-import {View, Text, SafeAreaView, StatusBar, Platform} from 'react-native';
+import {View, Text, SafeAreaView, StatusBar, Platform,Image} from 'react-native';
 import React from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import GlobalStyles from '../../GlobalStyles';
@@ -14,9 +14,12 @@ const TransactionDetails = () => {
         style={[
           GlobalStyles.oneaigHeader,
           GlobalStyles.alignTextContainer,
-          {paddingTop: Platform.OS === 'android' ? 40 : 15}, // Extra padding for Android
+
         ]}>
-        <Text style={GlobalStyles.oneaigText}>ONE AIG</Text>
+        <Image
+                  style={{height: 30, width: 70}}
+                  source={require('../../assets/oneaigicon.png')}
+                />
         <AntDesignIcon
           name="home"
           size={24}

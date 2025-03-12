@@ -15,8 +15,6 @@ import MainBody from './MainBody';
 import OrdersScreen from './OrdersScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
-
 const DetailsScreen = ({navigation}: any) => {
   const foodData = [
     {
@@ -28,13 +26,13 @@ const DetailsScreen = ({navigation}: any) => {
     {
       id: 2,
       itemName: 'Banana Cake',
-      coupon: 2 ,
+      coupon: 2,
       URL: require('../assets/foodImages/bananacake.jpg'),
     },
     {
       id: 3,
       itemName: 'Black Coffee',
-      coupon: 1 ,
+      coupon: 1,
       URL: require('../assets/foodImages/machinecoffe.jpg'),
     },
     {
@@ -64,19 +62,19 @@ const DetailsScreen = ({navigation}: any) => {
     {
       id: 8,
       itemName: 'Lemon Tea',
-      coupon: 1 ,
+      coupon: 1,
       URL: require('../assets/foodImages/lemontea.jpg'),
     },
     {
       id: 9,
       itemName: 'Sugar Free Coffee',
-      coupon: 1 ,
+      coupon: 1,
       URL: require('../assets/foodImages/machinecoffe.jpg'),
     },
     {
       id: 10,
       itemName: 'Tea',
-      coupon: 1 ,
+      coupon: 1,
       URL: require('../assets/foodImages/machinetea.jpg'),
     },
     {
@@ -88,19 +86,19 @@ const DetailsScreen = ({navigation}: any) => {
     {
       id: 12,
       itemName: 'Osmania Biscuits(3)',
-      coupon: 1 ,
+      coupon: 1,
       URL: require('../assets/foodImages/osmaniabiscuit.jpg'),
     },
     {
       id: 13,
       itemName: 'Pastry',
-      coupon: 2 ,
+      coupon: 2,
       URL: require('../assets/foodImages/pastry.jpg'),
     },
     {
       id: 14,
       itemName: 'Veg Puff',
-      coupon: 1 ,
+      coupon: 1,
       URL: require('../assets/foodImages/vegpuff.jpg'),
     },
   ];
@@ -110,8 +108,12 @@ const DetailsScreen = ({navigation}: any) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       {/* Header */}
-      <View style={[GlobalStyles.oneaigHeader, GlobalStyles.alignTextContainer]}>
-        <Text style={GlobalStyles.oneaigText}>ONE AIG</Text>
+      <View
+        style={[GlobalStyles.oneaigHeader, GlobalStyles.alignTextContainer]}>
+        <Image
+          style={{height: 30, width: 70}}
+          source={require('../assets/oneaigicon.png')}
+        />
         <AntDesignIcon
           name="home"
           size={24}
@@ -192,7 +194,6 @@ const DetailsScreen = ({navigation}: any) => {
         ) : (
           <OrdersScreen />
         )}
-
       </View>
     </SafeAreaView>
   );

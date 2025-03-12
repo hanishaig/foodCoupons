@@ -154,8 +154,25 @@ const MainBody = ({foodData}: any) => {
               paddingHorizontal: 20,
               paddingVertical: 8,
             }}
-            onPress={() => SetModalVisible(true)}>
-            <Text style={{color: '#fff', fontWeight: 'bold'}}>Checkout</Text>
+            // Example: main screen onPress
+            onPress={() => {
+              // Convert selectedItems -> array with quantity = 1
+              const selectedItemsArray = Object.keys(selectedItems)
+                .filter(id => selectedItems[Number(id)] === true)
+                .map(id => {
+                  const itemData = foodData.find((f: { id: number; }) => f.id === Number(id));
+                  return {
+                    ...itemData,
+                    quantity: 1, // start with quantity 1
+                  };
+                });
+
+              navigation.navigate('CheckoutPage', {
+                selectedItems: selectedItemsArray, // array of item objects
+                availableCoupons: couponsState,
+              });
+            }}>
+            <Text style={{color: '#fff', fontWeight: 'bold'}}>Go To Cart</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -164,3 +181,4 @@ const MainBody = ({foodData}: any) => {
 };
 
 export default MainBody;
+
