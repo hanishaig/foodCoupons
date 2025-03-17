@@ -2,7 +2,7 @@ import {View, Text, TouchableOpacity, SafeAreaView} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import GlobalStyles from './GlobalStyles';
-import HomeScreen from './components/homeScreen';
+import HomeScreen from './components/HomeScreen';
 import DetailsScreen from './components/DetailsScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, Header} from '@react-navigation/stack';
